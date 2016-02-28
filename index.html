@@ -1,19 +1,21 @@
 <!DOCTYPE html>
-<html lang="en"><head>
-<meta http-equiv="content-type" content="text/html; charset=utf-8">
-<meta name="viewport" content="width=device-width">
+<html lang="en">
+<head>
+    <meta http-equiv="content-type" content="text/html; charset=utf-8">
+    <meta name="viewport" content="width=device-width">
 
-<title>Test for IndexedDB Autosuggest</title>
-<script src="scripts/jquery.js"></script>
-<!-- <script src="scripts/support.js"></script> -->
-<script src="scripts/jquery-ui-1.js"></script>
-<script src="scripts/handlebars-1.js"></script>
-<script src="scripts/data.js"></script>
-<script src="scripts/action.js"></script>
+    <title>Dico</title>
+    <script src="scripts/jquery.js"></script>
+    <!-- <script src="scripts/support.js"></script> -->
+    <script src="scripts/jquery-ui-1.js"></script>
+    <script src="scripts/handlebars-1.js"></script>
+    <!-- <script src="scripts/data2_raccourci.json"></script> -->
+    <script src="scripts/action.js"></script>
 
-<link href="styles/jquery-ui-1.css" rel="stylesheet">
-<link href="styles/style.css" rel="stylesheet">
-<script>
+    <link href="styles/jquery-ui-1.css" rel="stylesheet">
+    <link href="styles/style.css" rel="stylesheet">
+
+    <script>
 
 // https://developer.mozilla.org/en/IndexedDB/Using_IndexedDB
 window.indexedDB = window.indexedDB || window.webkitIndexedDB || window.mozIndexedDB || window.msIndexedDB;
@@ -22,28 +24,27 @@ var IDBKeyRange = window.IDBKeyRange || window.webkitIDBKeyRange;
 
 var db;
 var template;
+var data;
 
 $(document).ready(function() {
-	console.log("Startup...");
+    console.log("Startup...");
 
    	//Create our template
    	var source   = $("#employeeTemplate").html();
-		template = Handlebars.compile(source);
+      template = Handlebars.compile(source);
 
-
-	var openRequest = indexedDB.open("employeesTest",1);
+      var openRequest = indexedDB.open("employeesTest",1);
 
     //handle setup
     openRequest.onupgradeneeded = function(e) {
 
-        console.log("running onupgradeneeded");
+        $("#status").text("running onupgradeneeded");
         var thisDb = e.target.result;
-
         //Create Employee
         if(!thisDb.objectStoreNames.contains("employee")) {
-            console.log("I need to make the employee objectstore");
+            $("#status").text("I need to make the employee objectstore");
             var objectStore = thisDb.createObjectStore("employee", { keyPath: "id", autoIncrement:true });
-            objectStore.createIndex("mot", "mot", { unique: false });
+            objectStore.createIndex("form", "form", { unique: false });
         }
 
 
@@ -54,7 +55,7 @@ $(document).ready(function() {
 
     	db.onerror = function(e) {
     		alert("Sorry, an unforseen error was thrown.");
-    		console.log("***ERROR***");
+    		$("#status").text("***ERROR***");
     		console.dir(e.target);
     	}
 
@@ -64,60 +65,149 @@ $(document).ready(function() {
 
 });
 
-function handleSeed() {
-	/*
-	This is how we handle the initial data seed. Normally this would be via AJAX
-	*/
-	db.transaction(["employee"], "readonly").objectStore("employee").count().onsuccess = function(e) {
-		var count = e.target.result;
-		if(count == 0 ) {
-			console.log("Need to generate fake data - stand by please...");
-			$("#status").text("Please stand by, loading in our initial data.");
-			var done = 0;
-			//Generate 1k people
-            //var data = [{"col1":"value1","col2":"value1","col3":"value1"},{"col1":"value2","col2":"value2","col3":"value2"},{"col1":"value3","col2":"value3","col3":"value3"}];
 
-			var trans = db.transaction(["employee"], "readwrite");
+  
+//var source = ["scripts/data2_raccourci.json", "scripts/data3.json", "scripts/data4.json", "scripts/data5.json"]
+//var source = ["scripts/data2_raccourci_short.json"];
+
+function handleSeed() {
+
+    /*
+    This is how we handle the initial data seed. Normally this would be via AJAX
+    */
+    db.transaction(["employee"], "readonly").objectStore("employee").count().onsuccess = function(e) {
+        var count = e.target.result;
+
+        // nombre de définitions dans Indexed DB
+        //console.log(count+" mots");
+         $("#status2").text(count+" mots");
+        
+        // var source = ["scripts/data2_raccourci.json", "scripts/data3.json", "scripts/data4.json", "scripts/data5.json"]
+        // var source = ["scripts/data2_raccourci.json", "scripts/data3.json"]
+        // var source = ["scripts/data2_raccourci_shortLR.json", "scripts/data2_raccourci_short2LR.json"]
+        var source = ["scripts/test1.json"]
+
+        if(count < 70000) {
+/* source 0 */
+          $.getJSON(source[0], function(json){
+            var data = json;
+          }).done(
+
+          function(data){
+            $("#status").text("Need to generate fake data - stand by please...");
+            $("#status").text("Please stand by, loading in our initial data.");
+            var done = 0;
+            var entreesTotales = data.length;
+            var entreeUnique = 100/entreesTotales;
+            var trans = db.transaction(["employee"], "readwrite");
             var employees = trans.objectStore("employee");
             for (i = 0; i < data.length; i++) {
-            resp = employees.put(data[i]);
-
-                resp.onsuccess = function(e) {
+              resp = employees.put(data[i]);
+              resp.onsuccess = function(e) {
                 done++;
-                if(done == 100) {
-                  $("#champsSaisie").removeAttr("disabled");
-                  $("#status").text("");
+                if(done == entreesTotales) {
+                  $("#status").text("Complet1!");
                   setupAutoComplete();
-                } else if(done % 100 == 0) {
-                  $("#status").text("Approximately "+Math.floor(done/10) +"% done.");
+/* source 1 */ 
+                  $.getJSON(source[1], function(json){
+                      var data = null;
+                      var data = json;
+                    }).done(
+                      function(data){
+                        $("#status").text("Need to generate fake data - stand by please...");
+                        $("#status").text("Please stand by, loading in our initial data.");
+                        var done = 0;
+                        var entreesTotales = data.length;
+                        var entreeUnique = 100/entreesTotales;
+                        var trans = db.transaction(["employee"], "readwrite");
+                        var employees = trans.objectStore("employee");
+                        for (i = 0; i < data.length; i++) {
+                          resp = employees.put(data[i]);
+                          resp.onsuccess = function(e) {
+                            done++;
+                            if(done == entreesTotales) {
+                              //$("#champsSaisie").removeAttr("disabled");
+                              $("#status").text("Complet2!");
+/* source 2 */
+                                $.getJSON(source[2], function(json){
+                                  var data = null;
+                                  var data = json;
+                                }).done(
+                                  function(data){
+                                    $("#status").text("Need to generate fake data - stand by please...");
+                                    $("#status").text("Please stand by, loading in our initial data.");
+                                    var done = 0;
+                                    var entreesTotales = data.length;
+                                    var entreeUnique = 100/entreesTotales;
+                                    var trans = db.transaction(["employee"], "readwrite");
+                                    var employees = trans.objectStore("employee");
+                                    for (i = 0; i < data.length; i++) {
+                                      resp = employees.put(data[i]);
+                                      resp.onsuccess = function(e) {
+                                        done++;
+                                        if(done == entreesTotales) {
+                                          $("#champsSaisie").removeAttr("disabled");
+                                          $("#status").text("Complet3!");
+/* source 3 */
+                                            $.getJSON(source[3], function(json){
+                                              var data = null;
+                                              var data = json;
+                                            }).done(
+                                              function(data){
+                                                $("#status").text("Need to generate fake data - stand by please...");
+                                                $("#status").text("Please stand by, loading in our initial data.");
+                                                var done = 0;
+                                                var entreesTotales = data.length;
+                                                var entreeUnique = 100/entreesTotales;
+                                                var trans = db.transaction(["employee"], "readwrite");
+                                                var employees = trans.objectStore("employee");
+                                                for (i = 0; i < data.length; i++) {
+                                                  resp = employees.put(data[i]);
+                                                  resp.onsuccess = function(e) {
+                                                    done++;
+                                                    if(done == entreesTotales) {
+                                                      $("#champsSaisie").removeAttr("disabled");
+                                                      $("#status").text("Complet3!");
+                                                      setupAutoComplete();
+                                                      var data = null;
+                                                      console.log(data);
+                                                    } else {
+                                                      $("#status").text(done+" / "+entreesTotales);
+                                                    }
+                                                  }
+                                                }
+                                              }
+                                            )
+                                            
+                                        } else {
+                                          $("#status").text(done+" / "+entreesTotales);
+                                        }
+                                      }
+                                    }
+                                  }
+                                )
+
+                            } else {
+                              $("#status").text(done+" / "+entreesTotales);
+                            }
+                          }
+                        }
+                      }
+                    )
+                } else {
+                  $("#status").text(done+" / "+entreesTotales);
                 }
               }
-
             }
+          }
 
-			/*for(var i=0; i<100; i++) {
-				var person = generateFakePerson();
-				//Modify our data to add a searchable field
-				person.searchkey = person.firstname.toLowerCase();
-                                resp = employees.add(person);
-				resp.onsuccess = function(e) {
-					done++;
-					if(done == 100) {
-						$("#champsSaisie").removeAttr("disabled");
-						$("#status").text("");
-						setupAutoComplete();
-					} else if(done % 100 == 0) {
-						$("#status").text("Approximately "+Math.floor(done/10) +"% done.");
-					}
-				}
-			}*/
-            // recharger page
-            
-		} else {
-			$("#champsSaisie").removeAttr("disabled");
-			setupAutoComplete();
-		}
-	}
+          )
+              
+        } else {
+         $("#champsSaisie").removeAttr("disabled");
+         setupAutoComplete();
+     }
+ }
 }
 
 function setupAutoComplete() {
@@ -134,93 +224,101 @@ function setupAutoComplete() {
 			var result = [];
 
             //résultat limité à 7 mots
-			transaction.oncomplete = function(event) {
-				response(result.slice(0, 7));
-			}
+            transaction.oncomplete = function(event) {
+                response(result.slice(0, 5));
+            }
 
 			//TODO: Handle the error and return to it jQuery UI
 			var objectStore = transaction.objectStore("employee");
 
 			//Credit: http://stackoverflow.com/a/8961462/52160
-        	var range = IDBKeyRange.bound(request.term.toLowerCase(), request.term.toLowerCase() + "z");
-          var index = objectStore.index("mot");
+           var range = IDBKeyRange.bound(request.term.toLowerCase(), request.term.toLowerCase() + "z");
+           var index = objectStore.index("form");
 
-          index.openCursor(range).onsuccess = function(event) {
+           index.openCursor(range).onsuccess = function(event) {
             var cursor = event.target.result;
             if(cursor) {
-              result.push({value: cursor.value.mot,person: cursor.value});
+              result.push({value: cursor.value.form,person: cursor.value});
               cursor.continue();
-	        	}
-	        };
+          }
+      };
 
-		},
-		minLength:2,
-		select:function(event,ui) {
-			$("#displayEmployee").show().html(template(ui.item.person));
-            $("body").animate({ scrollTop: 0}, 600);
-            $("#champsSaisie").blur();
-		}
-	});
+  },
+  minLength:2,
+  select:function(event,ui) {
+     $("#displayEmployee").show().html(template(ui.item.person));
+     $("body").animate({ scrollTop: 0}, 0);
+     $("#champsSaisie").blur();
+     //sticky();
+ }
+});
 
 }
+
 </script>
 
 <script id="employeeTemplate" type="text/x-handlerbars-template">
-    <h1>{{mot}}</h1>
-    <span class="example"><i>{{etym}}</i></span>
+    <h1>{{form}}</h1>
+    <span class="example aff"><i>{{etym}}</i></span>
     <div>
         {{#lexeme}}
+        <h2>{{pos}}.</h2></div>
+        {{#defs}}
+        <ol>
+            {{#each toplevel-def}}
+            <li>
 
-            <br>{{-pos}}.
+                {{gloss}}
+                {{#glossObject}}(<i class="glossObject"> {{domain}} {{register}} {{geographic}} {{period}} {{grammar}} {{misc}} {{semantic}}</i>) {{text}}</i>{{/glossObject}} 
+                {{#if exampleArray}}<i><ul class="example aff">{{#each exampleArray}}<li>
+                {{reference}} {{register}} {{semantic}}
+                {{text}}
+                {{{this}}}
+                </li>
+                {{/each}}</ul></i>{{/if}}
+                {{#if example}}<i class="exampleSP aff"><ul><li>{{{example}}}</li></ul></i>{{/if}}
+                {{#if sublevel-def}}<ol class="sublevel">{{#sublevel-def}}<li>
+                {{#glossObject}}<i class="glossObject"> ({{domain}} {{reference}} {{semantic}})</i> {{text}}{{/glossObject}}
+                {{gloss}}<br>
+                </li>{{/sublevel-def}}</ol>{{/if}}
 
-                {{#defs}}
+            </li>
+            {{/each}}
+            {{#if toplevel-def.gloss}}<li>{{toplevel-def.gloss}}</li>{{/if}}
+            {{#if toplevel-def.glossObject}}<li class="X">{{#toplevel-def.glossObject}} ({{register}} {{domain}} {{misc}}) {{text}} 
+            {{/toplevel-def.glossObject}}</li>{{/if}}
+            {{#if toplevel-def.exampleArray}}<i class="exampleSP aff"><ul>{{#each toplevel-def.exampleArray}}<li>{{this}}</li>{{/each}}</ul></i>{{/if}}
+        </ol>
 
-                <ol>
-                    {{#each toplevel-def}}
-                    <li>
+        {{/defs}}
+        {{#syn}}<h3>Synonymes</h3>
+        <ul>
+        {{#each itemArray}}
+        <li>{{this}}</li>
+        {{/each}}
+        </ul>
+        {{#if item}}<ul><li>{{item}}</li></ul>{{/if}}
+        {{/syn}}
 
-                        {{gloss}}
-                        {{#glossObject}}<i class="glossObject"> {{-domain}} {{-register}} {{-semantic}}</i>{{text}}</i>{{/glossObject}} 
-                        <i><ul class="example">{{#each exampleArray}}<li>
-                            {{this}}<br>
-                            {{-reference}}
-                            {{text}}</li>
-                            {{/each}}</ul></i>
-                        <i class="example">{{example}}</i>
-                        {{#sublevel-def}}<ul><li>
-                        {{#glossObject}}<i class="glossObject"> {{-reference}} {{-semantic}}</i>{{text}}{{/glossObject}}
-                            {{gloss}}<br>
-                        </li></ul>{{/sublevel-def}}
+        {{#hyper}}<h3>Hypernonymes</h3>
+        <ul>
+        {{#each itemArray}}
+        <li>{{this}}</li>
+        {{/each}}
+        </ul>
+        {{#if item}}<ul><li>{{item}}</li></ul>{{/if}}
+        {{/hyper}}
 
-                    </li>
-                    {{/each}}
-                    {{toplevel-def.gloss}}
-                </ol>
-
-                {{/defs}}
-
-                {{#syn}}<p>Synonyme(s)</p>
-                    {{#each item}}
-                        {{this}},
-                    {{/each}}
-                {{/syn}}
-
-                {{#hyper}}<p>Hypernyme(s)</p>
-                    {{item}}
-                    {{#each item}}
-                        {{this}},
-                    {{/each}}
-                {{/hyper}}
-
-                {{#hypo}}<p>Hyponyme(s)</p>
-                    {{#each item}}
-                        {{this}},
-                    {{/each}}
-                {{/hypo}}
+        {{#hypo}}<h3>Hyponymes</h3>
+        <ul>
+        {{#each itemArray}}
+        <li>{{this}}</li>
+        {{/each}}
+        </ul>
+        {{#if item}}<ul><li>{{item}}</li></ul>{{/if}}
+        {{/hypo}}
 
         {{/lexeme}}
-
-
 
     </div>
 
@@ -230,17 +328,19 @@ function setupAutoComplete() {
 
 <body>
 
-<form>
-	 <input aria-haspopup="true" aria-autocomplete="list" role="textbox" autocomplete="off" class="ui-autocomplete-input" id="champsSaisie" autofocus type="search"><span id="status"></span>
-    <a onclick="annuler();" id="btAnnuler">X</a>
-</form>
+    <form>
+      <input aria-haspopup="true" aria-autocomplete="list" role="textbox" autocomplete="off" class="ui-autocomplete-input" id="champsSaisie" autofocus type="search" class="clearable">
+    </form>
+    <span id="status"></span><br><span id="status2"></span>
+    <a onclick="annuler();" id="btAnnuler" class="bt">x</a>
+  
 
-<a onclick="cacheExemples();">Ex.</a>
+  <div id="displayEmployee"></div>
 
-<div id="displayEmployee"></div>
-
-
-
-<ul style="z-index: 1; top: 0px; left: 0px; display: none;" aria-activedescendant="ui-active-menuitem" role="listbox" class="ui-autocomplete ui-menu ui-widget ui-widget-content ui-corner-all"></ul></body></html>
-
-<a href="delete.html">Delete</a>
+  <ul style="z-index: 1; top: 0px; left: 0px; display: none;" aria-activedescendant="ui-active-menuitem" role="listbox" class="ui-autocomplete ui-menu ui-widget ui-widget-content ui-corner-all"></ul>
+<nav>
+  <a href="#" onclick="cacheExemples();" class="bt btExample">Ex.</a>
+  <a href="delete.html" class="bt">Delete</a>
+  <a href="index.html" class="bt">Reload</a>
+</nav>
+</body></html>

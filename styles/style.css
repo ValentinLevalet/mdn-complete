@@ -4,26 +4,44 @@
 }
 
 body {
-    font-family: "DejaVu", sans-serif;
-    margin: 7px;
+    /*font-family: "DejaVu", serif;*/
+    font-size: .9em;
+    margin: 0;
+    font-family: sans-serif;
 }
 
 h1 {
     font-weight: 300;
-    margin: .5em;
+    margin: .2em 0 0;
     text-align: center;
 }
 
-form {
-    position: fixed;
-    width: 100%;
+h2 {
+    font-style: italic;
+    text-align: center;
+    margin: .5em;
+}
+
+h3 {
+    margin-bottom: .5em;
+}
+
+h3 + ul, h3 + ul + ul {
+    padding-left: 1.5em;
 }
 
 input {
-    font-family: "DejaVu", serif;
+    /*font-family: "DejaVu", serif;*/
     font-size: 1.5em;
-    width: 96%;
-    padding: .5em .2em;
+    height: 50px;
+    position: fixed;
+    top: 0;
+    width: 271px;
+}
+
+}
+input:disabled {
+    background-color: red;
 }
 
 p {
@@ -31,47 +49,135 @@ p {
 }
 
 ul {
-    padding-left: 10px;
+    padding-left: 1em;
+}
+
+ol {
+    padding-left: 1.5em;
 }
 
 ol > li {
     margin-bottom: 1em;
 }
 
+.example, .exampleSP ul{
+    font-family: sans-serif;
+    list-style-type: disc;
+    margin-top: .35em;
+}
+
+.example {
+    margin-left: .4em;
+    margin-right: 2em;
+    display: block;
+}
+
+.example li {
+    margin-bottom: .25em;
+}
+
 div#displayEmployee {
-    margin-top: 45px;
-    display:none;
+    position: relative;
+    top: 31px;
+    z-index: -1;
+    padding: 0 8px 40px 5px;
 }
 
 #status {
     font-style: italic;
+    position: absolute;
+    top: 70px;
+    text-align: center;
+    display: block;
+    z-index: -1;
+    right: 0;
+}
+
+#status2 {
+    position: absolute;
+    top: 51px;
+    text-align: center;
+    display: block;
+    z-index: -1;
+    right: 0;
 }
 
 .gloss {
     margin-bottom: 1em;
 }
 
-.glossObject:before {
-    content: "(";
-}
-
-.glossObject:after {
-    content: ") ";
-}
-
 .ui-widget {
-    font-family: "DejaVu";
-    font-size: 1.5em;
+    /*font-family: "DejaVu";*/
+    width: 98%;
 }
 
 #btAnnuler {
-    margin-left: -80px;
-    width: 50px;
-    height: 50px;
-    top: -3px;
-    position: relative;
+    width: 42px;
+    height: 42px;
+    top: 0;
+    position: fixed;
+    right: 0;    
 }
 
 .cacher {
     display: none;
+}
+
+.bt {
+    border: 1px solid grey;
+    padding: 3px;
+    background-color: darkgray;
+    font-family: sans-serif;
+    display: inline-block;
+    height: 40px;
+    width: 40px;
+    text-align: center;
+    vertical-align: middle;
+    line-height: 34px;
+    font-size: 30px;
+    font-weight: bold;
+    color: #fff;
+    text-shadow: -1px -1px 0px #5F5F5F;
+}
+
+.btDelete {
+    position: relative;
+    top: 100px;
+}
+
+nav {
+    position: fixed;
+    bottom: 0;
+    right: 0;
+}
+
+.cadre-syn {
+    border: 1px solid grey;
+    border-radius: 10px;
+    padding: 5px;
+    margin: 5px;
+    font-size: 90%;
+    box-shadow: 0px 8px 10px #ccc;
+}
+
+.cadre-syn p {
+    font-weight: bold;
+}
+
+button {
+    margin-top: 50px;
+}
+
+.ui-menu .ui-menu-item {
+    padding: .5em 0;
+}
+
+.sublevel {
+    list-style-type: lower-latin;
+    margin-top: .35em;
+    padding-left: 2.5em;
+}
+
+.sublevel li {
+    margin-bottom: .25em;
 }

@@ -1,0 +1,103 @@
+[
+{
+                "etym": "Du latin médiéval dictionarium, venant du latin dictĭo, dictiōnis (« mot, expression ») avec le suffixe locatif -arium.",
+                "lexeme": {
+                    "defs": {
+                        "toplevel-def": [
+                            {
+                                "gloss": "Ouvrage de référence qui répertorie des mots dans un ordre convenu (alphabétique en général) pour leur associer :",
+                                "sublevel-def": [
+                                    {
+                                        "gloss": "une définition, un sens,",
+                                        "exampleArray": [
+                                            "Le dictionnaire de l'Académie française.",
+                                            "Les articles d'un dictionnaire."
+                                        ]
+                                    },
+                                    {
+                                        "gloss": "un ou plusieurs synonymes, antonymes, etc.,",
+                                        "exampleArray": [
+                                            "Je te recommande ce dictionnaire des synonymes.",
+                                            "Dictionnaire des homonymes."
+                                        ]
+                                    },
+                                    {
+                                        "gloss": "une étymologie,",
+                                        "example": "Un dictionnaire étymologique."
+                                    },
+                                    {
+                                        "gloss": "et/ou une traduction.",
+                                        "example": "Le dictionnaire latin-français, français-latin."
+                                    },
+                                    {
+                                        "gloss": "Il peut se contenter d'attester la simple existence d'un mot de façon normative, sans donner aucune autre information.",
+                                        "example": "Le dictionnaire du Scrabble."
+                                    }
+                                ]
+                            },
+                            {
+                                "glossObject": {
+                                    "semantic": "Par extension",
+                                    "text": "Recueil fait par ordre alphabétique sur des matières de littérature, de sciences ou d'arts."
+                                },
+                                "exampleArray": [
+                                    "Dictionnaire des rimes.",
+                                    "Dictionnaire de la Fable.",
+                                    "Dictionnaire de médecine, de chimie, de chirurgie.",
+                                    "Dictionnaire raisonné des arts et des sciences."
+                                ]
+                            },
+                            {
+                                "glossObject": {
+                                    "register": "Littéraire",
+                                    "text": "Livre, recueil de pensées, d'opinions, d'un auteur, publié dans un ordre alphabétique."
+                                },
+                                "exampleArray": [
+                                    "Le dictionnaire des idées reçues.",
+                                    "Le dictionnaire philosophique de Voltaire."
+                                ]
+                            },
+                            {
+                                "glossObject": {
+                                    "register": "Familier",
+                                    "semantic": "Figuré",
+                                    "text": "Personne de grande érudition, qui a des connaissances étendues et qui les communique aisément."
+                                },
+                                "example": "C'est un dictionnaire vivant !"
+                            },
+                            {
+                                "glossObject": {
+                                    "register": "désuet",
+                                    "text": "Vocabulaire, ensemble des mots dont se sert un écrivain."
+                                },
+                                "example": "Le dictionnaire de Bossuet est très étendu."
+                            }
+                        ]
+                    },
+                    "syn": {
+                        "itemArray": [
+                            "dico",
+                            "encomium",
+                            "encyclopédie",
+                            "glose",
+                            "glossaire",
+                            "index",
+                            "lexique",
+                            "thésaurus",
+                            "thesaurus",
+                            "trésor",
+                            "vocabulaire",
+                            "usuel"
+                        ]
+                    },
+                    "hyper": {
+                        "itemArray": [
+                            "glossaire",
+                            "lexique"
+                        ]
+                    },
+                    "pos": "N"
+                },
+                "form": "dictionnaire"
+            }
+            ]

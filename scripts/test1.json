@@ -1,0 +1,77 @@
+[
+{
+                "etym": "Du latin cathedra.",
+                "lexeme": {
+                    "defs": {
+                        "toplevel-def": [
+                            {
+                                "gloss": "Siège avec dossier, sans accoudoirs.",
+                                "exampleArray": [
+                                    "Il rangeait les chaises sous la table. Chaise de bois, de paille, de velours, de tapisserie. Chaise de salon.",
+                                    "Prenez une chaise. Avancez une chaise. Louer des chaises à l'église, dans une promenade publique. Loueuse de chaises."
+                                ]
+                            },
+                            {
+                                "glossObject": {
+                                    "register": "vieux",
+                                    "semantic": "Par extension",
+                                    "text": "Stalle, fauteuil, etc."
+                                },
+                                "example": "Alidor, assis dans sa chaise,<br>Médisant du ciel à son aise,<br>Peut bien médire aussi de moi. - Nicolas Boileau; Contre un athée , Épigrammes"
+                            },
+                            {
+                                "glossObject": {
+                                    "register": "vieux",
+                                    "semantic": "Par ellipse,Spécialement",
+                                    "text": "Chaise percée."
+                                },
+                                "example": "Aller à la chaise."
+                            },
+                            {
+                                "glossObject": {
+                                    "domain": "Architecture",
+                                    "text": "Assemblage de quatre fortes pièces de charpente sur lequel on établit la cage d'un clocher, d'un campanile, d'un moulin à vent."
+                                }
+                            },
+                            {
+                                "glossObject": {
+                                    "domain": "Architecture",
+                                    "text": "Dispositif en bois servant à exhausser une chèvre, une grue."
+                                }
+                            },
+                            {
+                                "glossObject": {
+                                    "register": "vieux,désuet",
+                                    "text": "Voiture hippomobile petite et légère."
+                                },
+                                "exampleArray": [
+                                    "Et l'on ne voyait point, comme au siècle où nous sommes,<br>Tant de selles et tant de bâts,<br>Tant de harnois pour les combats,<br>Tant de chaises, tant de carrosses,<br>Comme aussi ne voyait-on pas<br>Tant de festins et tant de noces. - Jean de La Fontaine; Le Cheval s'étant voulu venger du Cerf",
+                                    "Julie partit accompagnée de sa femme de chambre et du vieux militaire, qui galopait à côté de la chaise en veillant à la sécurité de sa maîtresse. - Honoré de Balzac, La Femme de trente ans, 1832"
+                                ]
+                            }
+                        ]
+                    },
+                    "hyper": {
+                        "item": "siège"
+                    },
+                    "hypo": {
+                        "itemArray": [
+                            "Siège à bord d'un navire",
+                            "pour observer.",
+                            "Sorte de cabriolet hippomobile pour courir la poste.",
+                            "chaise à bascule",
+                            "Sorte de siège fermé et couvert",
+                            "dans lequel on se faisait porter par deux hommes.",
+                            "espèce de canapé qui n'a de dossier qu'à l'une de ses extrémités.",
+                            "chez les Romains",
+                            "siège d'ivoire sur lequel siégeaient les principaux magistrats de la République.",
+                            "siège sur lequel on se met pour satisfaire aux besoins naturels.",
+                            "pelle-à-cul",
+                            "prie-dieu"
+                        ]
+                    },
+                    "pos": "N"
+                },
+                "form": "chaise"
+            }
+            ]
