@@ -65,11 +65,6 @@ $(document).ready(function() {
 
 });
 
-
-  
-//var source = ["scripts/data2_raccourci.json", "scripts/data3.json", "scripts/data4.json", "scripts/data5.json"]
-//var source = ["scripts/data2_raccourci_short.json"];
-
 function handleSeed() {
 
     /*
@@ -78,135 +73,99 @@ function handleSeed() {
     db.transaction(["employee"], "readonly").objectStore("employee").count().onsuccess = function(e) {
         var count = e.target.result;
 
+        var t0 = performance.now();
+
         // nombre de définitions dans Indexed DB
         //console.log(count+" mots");
          $("#status2").text(count+" mots");
         
-        // var source = ["scripts/data2_raccourci.json", "scripts/data3.json", "scripts/data4.json", "scripts/data5.json"]
-        // var source = ["scripts/data2_raccourci.json", "scripts/data3.json"]
-        // var source = ["scripts/data2_raccourci_shortLR.json", "scripts/data2_raccourci_short2LR.json"]
-        var source = ["scripts/test1.json"]
+        //var source = ["scripts/data2_raccourci.json", "scripts/data3.json", "scripts/data4.json", "scripts/data5.json"]
+        // var source = ["scripts/myFile(18).json"];
+        var source = ["scripts/part1a.json", "scripts/part1b.json", "scripts/part1c.json", "scripts/part1d.json", "scripts/part2a.json", "scripts/part2b.json", "scripts/part2c.json", "scripts/part2d.json"]
 
-        if(count < 70000) {
-/* source 0 */
-          $.getJSON(source[0], function(json){
-            var data = json;
-          }).done(
+        if(count < 2) {
+            var compteur = 0;
+            var progression = 0;
 
-          function(data){
-            $("#status").text("Need to generate fake data - stand by please...");
-            $("#status").text("Please stand by, loading in our initial data.");
-            var done = 0;
-            var entreesTotales = data.length;
-            var entreeUnique = 100/entreesTotales;
-            var trans = db.transaction(["employee"], "readwrite");
-            var employees = trans.objectStore("employee");
-            for (i = 0; i < data.length; i++) {
-              resp = employees.put(data[i]);
-              resp.onsuccess = function(e) {
-                done++;
-                if(done == entreesTotales) {
-                  $("#status").text("Complet1!");
-                  setupAutoComplete();
-/* source 1 */ 
-                  $.getJSON(source[1], function(json){
-                      var data = null;
-                      var data = json;
-                    }).done(
-                      function(data){
-                        $("#status").text("Need to generate fake data - stand by please...");
-                        $("#status").text("Please stand by, loading in our initial data.");
+            function enregistreMots(data){
+                $.ajax({
+                    dataType: "json", 
+                    url: data, 
+                    async: true,
+                    success: (function(json){
+                        //$("#status").append("Veuillez patienter, installation du dictionnaire.");
                         var done = 0;
-                        var entreesTotales = data.length;
+                        var entreesTotales = json.length;
                         var entreeUnique = 100/entreesTotales;
                         var trans = db.transaction(["employee"], "readwrite");
                         var employees = trans.objectStore("employee");
-                        for (i = 0; i < data.length; i++) {
-                          resp = employees.put(data[i]);
+                        for (i = 0; i < json.length; i++) {
+                          resp = employees.add(json[i]);
                           resp.onsuccess = function(e) {
                             done++;
+                            //alert("written: "+done)
                             if(done == entreesTotales) {
-                              //$("#champsSaisie").removeAttr("disabled");
-                              $("#status").text("Complet2!");
-/* source 2 */
-                                $.getJSON(source[2], function(json){
-                                  var data = null;
-                                  var data = json;
-                                }).done(
-                                  function(data){
-                                    $("#status").text("Need to generate fake data - stand by please...");
-                                    $("#status").text("Please stand by, loading in our initial data.");
-                                    var done = 0;
-                                    var entreesTotales = data.length;
-                                    var entreeUnique = 100/entreesTotales;
-                                    var trans = db.transaction(["employee"], "readwrite");
-                                    var employees = trans.objectStore("employee");
-                                    for (i = 0; i < data.length; i++) {
-                                      resp = employees.put(data[i]);
-                                      resp.onsuccess = function(e) {
-                                        done++;
-                                        if(done == entreesTotales) {
-                                          $("#champsSaisie").removeAttr("disabled");
-                                          $("#status").text("Complet3!");
-/* source 3 */
-                                            $.getJSON(source[3], function(json){
-                                              var data = null;
-                                              var data = json;
-                                            }).done(
-                                              function(data){
-                                                $("#status").text("Need to generate fake data - stand by please...");
-                                                $("#status").text("Please stand by, loading in our initial data.");
-                                                var done = 0;
-                                                var entreesTotales = data.length;
-                                                var entreeUnique = 100/entreesTotales;
-                                                var trans = db.transaction(["employee"], "readwrite");
-                                                var employees = trans.objectStore("employee");
-                                                for (i = 0; i < data.length; i++) {
-                                                  resp = employees.put(data[i]);
-                                                  resp.onsuccess = function(e) {
-                                                    done++;
-                                                    if(done == entreesTotales) {
-                                                      $("#champsSaisie").removeAttr("disabled");
-                                                      $("#status").text("Complet3!");
-                                                      setupAutoComplete();
-                                                      var data = null;
-                                                      console.log(data);
-                                                    } else {
-                                                      $("#status").text(done+" / "+entreesTotales);
-                                                    }
-                                                  }
-                                                }
-                                              }
-                                            )
-                                            
-                                        } else {
-                                          $("#status").text(done+" / "+entreesTotales);
-                                        }
-                                      }
-                                    }
-                                  }
-                                )
-
+                              $("#champsSaisie").removeAttr("disabled");
+                              //setupAutoComplete();
                             } else {
-                              $("#status").text(done+" / "+entreesTotales);
+                              //$("#status").text(done+" / "+entreesTotales);
+                              //$("#progBar").val(entreeUnique);
                             }
                           }
+                        };
+                        trans.oncomplete = function(event) {
+                            $("#status").append("N° "+compteur+" complet!");
+                            progression++;
+                            $("#progBar").val(progression);
+                            boucleSwitch();
+                            setupAutoComplete();
                         }
-                      }
-                    )
-                } else {
-                  $("#status").text(done+" / "+entreesTotales);
-                }
-              }
+                    }),
+                    fail:(function(){
+                        alert("error");
+                    }),
+                    complete:(function(){
+                        //alert("Complet!");
+                        compteur++;
+                        //boucleSwitch();
+                    })
+                });
             }
-          }
 
-          )
-              
+            function boucleSwitch(){
+
+                switch(compteur){
+                    case 0: enregistreMots(source[0]);
+                    break;
+                    case 1: enregistreMots(source[1]);
+                    break;
+                    case 2: enregistreMots(source[2]);
+                    break;
+                    case 3: enregistreMots(source[3]);
+                    break;
+                    case 4: enregistreMots(source[4]);
+                    break;
+                    case 5: enregistreMots(source[5]);
+                    break;
+                    case 6: enregistreMots(source[6]);
+                    break;
+                    case 7: enregistreMots(source[7]);
+                    break;
+                    default:
+                    var t1 = performance.now();
+                    $("#status").append("temps pris : "+((Math.floor(t1 - t0))/1000)+" sec");
+                    break;
+                }
+
+            }
+            
+            boucleSwitch();
+            //enregistreMots(source[0]);
+        
         } else {
-         $("#champsSaisie").removeAttr("disabled");
-         setupAutoComplete();
-     }
+            $("#champsSaisie").removeAttr("disabled");
+            setupAutoComplete();
+        }
  }
 }
 
@@ -228,10 +187,10 @@ function setupAutoComplete() {
                 response(result.slice(0, 5));
             }
 
-			//TODO: Handle the error and return to it jQuery UI
-			var objectStore = transaction.objectStore("employee");
+      //TODO: Handle the error and return to it jQuery UI
+      var objectStore = transaction.objectStore("employee");
 
-			//Credit: http://stackoverflow.com/a/8961462/52160
+      //Credit: http://stackoverflow.com/a/8961462/52160
            var range = IDBKeyRange.bound(request.term.toLowerCase(), request.term.toLowerCase() + "z");
            var index = objectStore.index("form");
 
@@ -250,10 +209,16 @@ function setupAutoComplete() {
      $("body").animate({ scrollTop: 0}, 0);
      $("#champsSaisie").blur();
      //sticky();
- }
+  },
+  position: { my: "left bottom", at: "left top"},
+  delay: 0
 });
 
 }
+
+$('#menu').menu({
+    "position": { my: "left bottom", at: "left top" }
+});
 
 </script>
 
@@ -327,7 +292,8 @@ function setupAutoComplete() {
 </head>
 
 <body>
-
+    <progress id="progBar" value="0" max="8"></progress>
+    <ul id="menu" style="z-index: 1; bottom: 0px; left: 0px; display: none;" aria-activedescendant="ui-active-menuitem" role="listbox" class="ui-autocomplete ui-menu ui-widget ui-widget-content ui-corner-all"></ul>
     <form>
       <input aria-haspopup="true" aria-autocomplete="list" role="textbox" autocomplete="off" class="ui-autocomplete-input" id="champsSaisie" autofocus type="search" class="clearable">
     </form>
@@ -337,7 +303,6 @@ function setupAutoComplete() {
 
   <div id="displayEmployee"></div>
 
-  <ul style="z-index: 1; top: 0px; left: 0px; display: none;" aria-activedescendant="ui-active-menuitem" role="listbox" class="ui-autocomplete ui-menu ui-widget ui-widget-content ui-corner-all"></ul>
 <nav>
   <a href="#" onclick="cacheExemples();" class="bt btExample">Ex.</a>
   <a href="delete.html" class="bt">Delete</a>

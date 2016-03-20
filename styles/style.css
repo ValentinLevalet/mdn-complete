@@ -35,7 +35,7 @@ input {
     font-size: 1.5em;
     height: 50px;
     position: fixed;
-    top: 0;
+    bottom: 0;
     width: 271px;
 }
 
@@ -77,8 +77,6 @@ ol > li {
 }
 
 div#displayEmployee {
-    position: relative;
-    top: 31px;
     z-index: -1;
     padding: 0 8px 40px 5px;
 }
@@ -86,20 +84,20 @@ div#displayEmployee {
 #status {
     font-style: italic;
     position: absolute;
-    top: 70px;
+    top: 20px;
     text-align: center;
     display: block;
     z-index: -1;
-    right: 0;
+    right: 5px;
 }
 
 #status2 {
     position: absolute;
-    top: 51px;
+    top: 0;
     text-align: center;
     display: block;
     z-index: -1;
-    right: 0;
+    right: 5px;
 }
 
 .gloss {
@@ -114,7 +112,7 @@ div#displayEmployee {
 #btAnnuler {
     width: 42px;
     height: 42px;
-    top: 0;
+    bottom: 0;
     position: fixed;
     right: 0;    
 }
@@ -128,7 +126,7 @@ div#displayEmployee {
     padding: 3px;
     background-color: darkgray;
     font-family: sans-serif;
-    display: inline-block;
+    display: block;
     height: 40px;
     width: 40px;
     text-align: center;
@@ -138,6 +136,7 @@ div#displayEmployee {
     font-weight: bold;
     color: #fff;
     text-shadow: -1px -1px 0px #5F5F5F;
+    opacity: .25;
 }
 
 .btDelete {
@@ -147,8 +146,8 @@ div#displayEmployee {
 
 nav {
     position: fixed;
-    bottom: 0;
-    right: 0;
+    top: 0;
+    left: 0;
 }
 
 .cadre-syn {
