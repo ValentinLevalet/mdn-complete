@@ -86,6 +86,7 @@ function handleSeed() {
         if(count < 2) {
             var compteur = 0;
             var progression = 0;
+            $("#progBar").show();
 
             function enregistreMots(data){
                 $.ajax({
@@ -104,13 +105,13 @@ function handleSeed() {
                           resp.onsuccess = function(e) {
                             done++;
                             //alert("written: "+done)
-                            if(done == entreesTotales) {
-                              $("#champsSaisie").removeAttr("disabled");
+                            //if(done == entreesTotales) {
+                            //  $("#champsSaisie").removeAttr("disabled");
                               //setupAutoComplete();
-                            } else {
+                            //} else {
                               //$("#status").text(done+" / "+entreesTotales);
                               //$("#progBar").val(entreeUnique);
-                            }
+                            //}
                           }
                         };
                         trans.oncomplete = function(event) {
@@ -118,7 +119,7 @@ function handleSeed() {
                             progression++;
                             $("#progBar").val(progression);
                             boucleSwitch();
-                            setupAutoComplete();
+                            //setupAutoComplete();
                         }
                     }),
                     fail:(function(){
@@ -127,6 +128,7 @@ function handleSeed() {
                     complete:(function(){
                         //alert("Complet!");
                         compteur++;
+                        json = null;
                         //boucleSwitch();
                     })
                 });
@@ -175,7 +177,7 @@ function setupAutoComplete() {
 	$("#champsSaisie").autocomplete({
 		source: function( request, response ) {
 
-			console.log("Going to look for "+request.term);
+			//console.log("Going to look for "+request.term);
 
 			//$("#displayEmployee").hide();
 
@@ -220,10 +222,157 @@ $('#menu').menu({
     "position": { my: "left bottom", at: "left top" }
 });
 
+////////////////// FAVORIS ////////////////////////
+
+    var customerData = [];
+
+    const dbName = "the_name13";
+
+    // Ouverture d'indexedDB.
+    var request = indexedDB.open(dbName, 3);
+
+    request.onupgradeneeded = function (event) {
+
+        var db2 = event.target.result;
+
+        // Création d'un autre objet appelé "names" avec l'option autoIncrement définie à true.    
+        var objStore = db2.createObjectStore("names", { autoIncrement : true });
+        objStore.createIndex("nom", "nom", { unique : true });
+
+        // Puisque l'objet "names" a un générateur de clé, la clé pour la valeur name est générée automatiquement.
+        // Les enregistrements ajoutés ressembleront à ceci :
+        // key : 1 => value : "Bill"
+        // key : 2 => value : "Donna"
+        for (var i in customerData) {
+            objStore.add(customerData[i].nom);
+        }
+    }
+
+
+    request.onsuccess = function(event) {
+      db2 = request.result;
+      //console.log(db2);
+      var mots = [];
+      var indexes = [];
+
+      var objectStore = db2.transaction("names").objectStore("names");
+
+
+      objectStore.openCursor().onsuccess = function(event) {
+        var cursor = event.target.result;
+        if (cursor) {
+            var mot = cursor.value;
+            var index = cursor.key;
+            mots.push(mot);
+            indexes.push(index)
+          //alert("Clé : " + cursor.key + " - Valeur : " + cursor.value);
+          cursor.continue();
+        }
+        else {
+          //alert("No more entries!");
+            //console.log(mots);
+            //console.log(indexes);
+
+            function makeUL(arrayMots, arrayIndexes) {
+                // Create the list element:
+                var list = document.createElement('ul');
+
+                for(var i = 0; i < arrayMots.length; i++) {
+                    // Create the list item:
+                    var item = document.createElement('li');
+                    //ajout id basé sur clé indexeddb
+                    item.setAttribute("id", arrayIndexes[i]);
+                    item.setAttribute("class", "ligne-favori");
+                    var suppr = document.createElement('a');
+                    suppr.setAttribute("class", "favori-sup");
+                    suppr.setAttribute("onclick", "supprValeur(this);")
+                    suppr.appendChild(document.createTextNode("x "));
+                    item.appendChild(suppr);
+                    var span = document.createElement('span');
+                    span.setAttribute("class", "mot-favori");
+                    span.setAttribute("onclick", "chercheMot(this);")
+                    item.appendChild(span);
+
+                    // Set item contents:
+
+                    //item.appendChild((document.createTextNode(arrayMots[i]));
+                    span.appendChild(document.createTextNode(arrayMots[i]));
+
+                    // Add it to the list:
+                    list.appendChild(item);
+                }
+
+                // Finally, return the constructed list:
+                return list;
+            };
+
+            // Add the contents of options[0] to #foo:
+            document.getElementById('foo').appendChild(makeUL(mots, indexes));
+
+        }
+      }
+  }
+
+function chercheMot(mot){
+    var ceMot = mot.innerText;
+    console.log(ceMot);
+    document.getElementById("champsSaisie").value = ceMot;
+};
+
+/*  var favoris = document.getElementsByClassName('mot-favori').addEventListener("click", function(e) {
+    console.log("you clicked" + e.target);
+    e.preventDefault();
+  })
+  console.log(favoris);*/
+  var indexSuppr = "";
+  var listeFavoris = document.getElementById("foo");
+
+  var indexASupprimer = function (){
+    console.log(indexSuppr);
+  }
+
+  function supprValeur(prop){
+    var indexSuppr = prop.parentNode.id;
+    console.log(indexSuppr);
+    var indexSuppr = parseInt(indexSuppr);
+    console.log(indexSuppr);
+    // var ouaoua = document.getElementById("div2").parentNode;
+    //console.log(ouaoua)
+    
+    var request = db2.transaction(["names"], "readwrite")
+    .objectStore("names")
+    .delete(indexSuppr);
+    request.onsuccess = function(event) {
+        // c'est supprimé !
+        console.log(indexSuppr+"supprimé!")
+    };
+  }
+
+  function ajoutMot(){
+    var mot = document.getElementById('mot-def').innerHTML;
+    var transaction = db2.transaction(["names"], "readwrite");
+
+    // Faire quelque chose lors toutes les données sont ajoutées à la base de données.
+    transaction.oncomplete = function(event) {
+      alert("All done!");
+    };
+
+    transaction.onerror = function(event) {
+      // N'oubliez pas de gérer les erreurs !
+    };
+
+    var objectStore = transaction.objectStore("names");
+    var request = objectStore.put(mot);
+    request.onsuccess = function(event) {
+      // event.target.result == customerData[i].ssn;
+    }
+
+  }
+
 </script>
 
 <script id="employeeTemplate" type="text/x-handlerbars-template">
-    <h1>{{form}}</h1>
+    <h1 onclick="ajoutMot()" id="mot-def">{{form}}</h1>
     <span class="example aff"><i>{{etym}}</i></span>
     <div>
         {{#lexeme}}
@@ -300,12 +449,13 @@ $('#menu').menu({
     <span id="status"></span><br><span id="status2"></span>
     <a onclick="annuler();" id="btAnnuler" class="bt">x</a>
   
-
+<div id="foo"></div>
   <div id="displayEmployee"></div>
 
 <nav>
-  <a href="#" onclick="cacheExemples();" class="bt btExample">Ex.</a>
+  <a href="" onclick="cacheExemples();" class="bt btExample">Ex.</a>
   <a href="delete.html" class="bt">Delete</a>
   <a href="index.html" class="bt">Reload</a>
+  <a href="" onclick="ajoutFavoris()" class="bt">favoris</a>
 </nav>
 </body></html>
