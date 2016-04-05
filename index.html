@@ -186,7 +186,7 @@ function setupAutoComplete() {
 
             //résultat limité à 7 mots
             transaction.oncomplete = function(event) {
-                response(result.slice(0, 5));
+                response(result.slice(0, 6));
             }
 
       //TODO: Handle the error and return to it jQuery UI
@@ -456,6 +456,5 @@ function chercheMot(mot){
   <a href="" onclick="cacheExemples();" class="bt btExample">Ex.</a>
   <a href="delete.html" class="bt">Delete</a>
   <a href="index.html" class="bt">Reload</a>
-  <a href="" onclick="ajoutFavoris()" class="bt">favoris</a>
 </nav>
 </body></html>
