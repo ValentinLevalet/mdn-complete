@@ -224,9 +224,11 @@ $('#menu').menu({
 
 ////////////////// FAVORIS ////////////////////////
 
+function listerFavoris(){
+
     var customerData = [];
 
-    const dbName = "the_name13";
+    const dbName = "the_name19";
 
     // Ouverture d'indexedDB.
     var request = indexedDB.open(dbName, 3);
@@ -243,9 +245,9 @@ $('#menu').menu({
         // Les enregistrements ajoutés ressembleront à ceci :
         // key : 1 => value : "Bill"
         // key : 2 => value : "Donna"
-        for (var i in customerData) {
+        /*for (var i in customerData) {
             objStore.add(customerData[i].nom);
-        }
+        }*/
     }
 
 
@@ -265,7 +267,7 @@ $('#menu').menu({
             var index = cursor.key;
             mots.push(mot);
             indexes.push(index)
-          //alert("Clé : " + cursor.key + " - Valeur : " + cursor.value);
+          //console.log("Clé : " + cursor.key + " - Valeur : " + cursor.value);
           cursor.continue();
         }
         else {
@@ -274,6 +276,10 @@ $('#menu').menu({
             //console.log(indexes);
 
             function makeUL(arrayMots, arrayIndexes) {
+                var foo = document.getElementById('foo');
+                while(foo.firstChild) {
+                    foo.removeChild(foo.firstChild);   
+                };
                 // Create the list element:
                 var list = document.createElement('ul');
 
@@ -281,8 +287,8 @@ $('#menu').menu({
                     // Create the list item:
                     var item = document.createElement('li');
                     //ajout id basé sur clé indexeddb
-                    item.setAttribute("id", arrayIndexes[i]);
-                    item.setAttribute("class", "ligne-favori");
+                    item.setAttribute("class", arrayIndexes[i]);
+                    //item.setAttribute("class", "ligne-favori");
                     var suppr = document.createElement('a');
                     suppr.setAttribute("class", "favori-sup");
                     suppr.setAttribute("onclick", "supprValeur(this);")
@@ -311,7 +317,10 @@ $('#menu').menu({
 
         }
       }
-  }
+    }
+}
+
+listerFavoris();
 
 function chercheMot(mot){
     var ceMot = mot.innerText;
@@ -327,42 +336,46 @@ function chercheMot(mot){
   var indexSuppr = "";
   var listeFavoris = document.getElementById("foo");
 
-  var indexASupprimer = function (){
-    console.log(indexSuppr);
-  }
-
   function supprValeur(prop){
-    var indexSuppr = prop.parentNode.id;
+    var indexSuppr = prop.parentNode.className;
     console.log(indexSuppr);
-    var indexSuppr = parseInt(indexSuppr);
-    console.log(indexSuppr);
-    // var ouaoua = document.getElementById("div2").parentNode;
-    //console.log(ouaoua)
+    //var indexSuppr = parseInt(indexSuppr);
     
     var request = db2.transaction(["names"], "readwrite")
     .objectStore("names")
     .delete(indexSuppr);
     request.onsuccess = function(event) {
         // c'est supprimé !
-        console.log(indexSuppr+"supprimé!")
+        //console.log(indexSuppr+"supprimé!");
+        listerFavoris();
     };
+    // console.log(request);
+    request.onerror = function(event) {
+        console.log("Database error: " + event.target.errorCode);
+    }
   }
 
   function ajoutMot(){
-    var mot = document.getElementById('mot-def').innerHTML;
+    var titre = document.getElementsByTagName('h1');
+    var mot = titre[0].innerHTML;
+    var title = titre[0].getAttribute("title");
+    //console.log(title);
     var transaction = db2.transaction(["names"], "readwrite");
 
     // Faire quelque chose lors toutes les données sont ajoutées à la base de données.
     transaction.oncomplete = function(event) {
-      alert("All done!");
+      // alert("All done!");
+      listerFavoris();
     };
 
     transaction.onerror = function(event) {
       // N'oubliez pas de gérer les erreurs !
+      alert('erreur');
     };
 
     var objectStore = transaction.objectStore("names");
-    var request = objectStore.put(mot);
+    //var request = objectStore.put(mot, title);
+    var request = objectStore.put(mot, title);
     request.onsuccess = function(event) {
       // event.target.result == customerData[i].ssn;
     }
@@ -372,7 +385,8 @@ function chercheMot(mot){
 </script>
 
 <script id="employeeTemplate" type="text/x-handlerbars-template">
-    <h1 onclick="ajoutMot()" id="mot-def">{{form}}</h1>
+
+<div class="{{id}}"><h1 onclick="ajoutMot()" id="mot-def" title="{{id}}">{{form}}</h1><a onclick="supprValeur(this);" class="favori-sup">x </a></div>
     <span class="example aff"><i>{{etym}}</i></span>
     <div>
         {{#lexeme}}
@@ -453,7 +467,7 @@ function chercheMot(mot){
   <div id="displayEmployee"></div>
 
 <nav>
-  <a href="" onclick="cacheExemples();" class="bt btExample">Ex.</a>
+  <p href="" onclick="cacheExemples();" class="bt btExample">Ex.</p>
   <a href="delete.html" class="bt">Delete</a>
   <a href="index.html" class="bt">Reload</a>
 </nav>
