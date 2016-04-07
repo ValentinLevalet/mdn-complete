@@ -173,48 +173,49 @@ function handleSeed() {
 
 function setupAutoComplete() {
 
-	//Create the autocomplete
-	$("#champsSaisie").autocomplete({
-		source: function( request, response ) {
+    //Create the autocomplete
+    $("#champsSaisie").autocomplete({
+        source: function( request, response ) {
 
-			//console.log("Going to look for "+request.term);
+            //console.log("Going to look for "+request.term);
 
-			//$("#displayEmployee").hide();
+            //$("#displayEmployee").hide();
 
-			var transaction = db.transaction(["employee"], "readonly");
-			var result = [];
+            var transaction = db.transaction(["employee"], "readonly");
+            var result = [];
 
             //résultat limité à 7 mots
             transaction.oncomplete = function(event) {
                 response(result.slice(0, 6));
             }
 
-      //TODO: Handle the error and return to it jQuery UI
-      var objectStore = transaction.objectStore("employee");
+            //TODO: Handle the error and return to it jQuery UI
+            var objectStore = transaction.objectStore("employee");
 
-      //Credit: http://stackoverflow.com/a/8961462/52160
-           var range = IDBKeyRange.bound(request.term.toLowerCase(), request.term.toLowerCase() + "z");
-           var index = objectStore.index("form");
+            //Credit: http://stackoverflow.com/a/8961462/52160
+            var range = IDBKeyRange.bound(request.term.toLowerCase(), request.term.toLowerCase() + "z");
+            var index = objectStore.index("form");
 
-           index.openCursor(range).onsuccess = function(event) {
-            var cursor = event.target.result;
-            if(cursor) {
-              result.push({value: cursor.value.form,person: cursor.value});
-              cursor.continue();
-          }
-      };
+            index.openCursor(range).onsuccess = function(event) {
+                var cursor = event.target.result;
+                if(cursor) {
+                    result.push({value: cursor.value.form,person: cursor.value});
+                    cursor.continue();
+                }
+            };
 
-  },
-  minLength:2,
-  select:function(event,ui) {
-     $("#displayEmployee").show().html(template(ui.item.person));
-     $("body").animate({ scrollTop: 0}, 0);
-     $("#champsSaisie").blur();
-     //sticky();
-  },
-  position: { my: "left bottom", at: "left top"},
-  delay: 0
-});
+        },
+        minLength:2,
+        select:function(event,ui) {
+            console.log(ui);
+            $("#displayEmployee").show().html(template(ui.item.person));
+            $("body").animate({ scrollTop: 0}, 0);
+            $("#champsSaisie").blur();
+        //sticky();
+        },
+        position: { my: "left bottom", at: "left top"},
+        delay: 0
+    });
 
 }
 
@@ -289,7 +290,7 @@ function listerFavoris(){
                     //ajout id basé sur clé indexeddb
                     item.setAttribute("class", arrayIndexes[i]);
                     //item.setAttribute("class", "ligne-favori");
-                    var suppr = document.createElement('a');
+                    var suppr = document.createElement('button');
                     suppr.setAttribute("class", "favori-sup");
                     suppr.setAttribute("onclick", "supprValeur(this);")
                     suppr.appendChild(document.createTextNode("x "));
@@ -323,9 +324,20 @@ function listerFavoris(){
 listerFavoris();
 
 function chercheMot(mot){
-    var ceMot = mot.innerText;
-    console.log(ceMot);
-    document.getElementById("champsSaisie").value = ceMot;
+    //var ceMot = mot.innerText;
+    //console.log(ceMot);
+    //document.getElementById("champsSaisie").value = ceMot;
+    var idMot = mot.parentNode.className;
+    var idMot = parseInt(idMot);
+    //console.log(idMot);
+    var request = db.transaction(["employee"], "readonly").objectStore("employee").get(idMot);
+    request.onerror = function(event) {
+        console.log('error chercheMot');
+    };
+    request.onsuccess = function(event) {
+        //console.log(request);
+        $("#displayEmployee").show().html(template(request.result));
+    }
 };
 
 /*  var favoris = document.getElementsByClassName('mot-favori').addEventListener("click", function(e) {
@@ -386,7 +398,7 @@ function chercheMot(mot){
 
 <script id="employeeTemplate" type="text/x-handlerbars-template">
 
-<div class="{{id}}"><h1 onclick="ajoutMot()" id="mot-def" title="{{id}}">{{form}}</h1><a onclick="supprValeur(this);" class="favori-sup">x </a></div>
+<div class="mot"><span class="{{id}}"><h1 onclick="ajoutMot()" id="mot-def" title="{{id}}">{{form}}</h1><button onclick="supprValeur(this);" class="favori-sup">x </button></span></div>
     <span class="example aff"><i>{{etym}}</i></span>
     <div>
         {{#lexeme}}

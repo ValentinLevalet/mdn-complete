@@ -165,9 +165,9 @@ nav {
     font-weight: bold;
 }
 
-button {
+/* button {
     margin-top: 50px;
-}
+} */
 
 .ui-menu .ui-menu-item {
     padding: .4em 0;
@@ -189,4 +189,8 @@ button {
 
 #foo {
     text-align: right;
+}
+
+.mot {
+    text-align: center;
 }
