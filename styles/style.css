@@ -34,8 +34,7 @@ h3 + ul, h3 + ul + ul {
     padding-left: 1.5em;
 }
 
-input {
-    /*font-family: "DejaVu", serif;*/
+#champsSaisie {
     font-size: 1.5em;
     height: 50px;
     position: fixed;
@@ -146,10 +145,30 @@ div#displayEmployee {
     top: 100px;
 }
 
-nav {
+#page-content {
+    transition: margin-left 0.5s ease;
+    box-shadow: 0 0 50px;
+    height: 100%;
+    position: relative;
+    width: 320px;
+}
+
+#drawer {
     position: fixed;
-    top: 0;
+    top: 20px;
+    left: -320px;
+    width: 280px;
+    height: 100%;
+    transition: left 0.5s ease;
+    padding: 20px;
+}
+
+#drawer-toggle:checked ~ #drawer {
     left: 0;
+}
+
+#drawer-toggle:checked ~ #page-content {
+    margin-left: 320px;
 }
 
 .cadre-syn {
