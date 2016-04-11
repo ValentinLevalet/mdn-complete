@@ -7,6 +7,7 @@ body {
     font-family: sans-serif;
     font-size: .9em;
     margin: 0;
+    overflow: hidden;
 }
 
 h1, h2, h3 {
@@ -147,24 +148,49 @@ div#displayEmployee {
 
 #page-content {
     transition: margin-left 0.5s ease;
-    box-shadow: 0 0 50px;
     height: 100%;
-    position: relative;
+    overflow-x: hidden;
+    overflow-y: scroll;
     width: 320px;
 }
 
 #drawer {
-    position: fixed;
-    top: 20px;
+    box-shadow: 0 0 0;
+    position: absolute;
     left: -320px;
     width: 280px;
     height: 100%;
-    transition: left 0.5s ease;
+    transition: left 0.5s;
     padding: 20px;
 }
 
-#drawer-toggle:checked ~ #drawer {
+#drawer-toggle, #drawer-toggle-label {
     left: 0;
+    position: absolute;
+    transition: left .5s;
+}
+
+#drawer-toggle {
+    display: none;
+}
+
+#drawer-toggle-label {
+    font-size: 2.5em;
+    outline: solid 1px;
+    padding: 0 10px;
+}
+
+#drawer-toggle:checked {
+    left: 280px;
+}
+
+#drawer-toggle:checked ~ #drawer {
+    box-shadow: 0 0 50px;
+    left: -40px;
+}
+
+#drawer-toggle:checked ~ #drawer-toggle-label {
+    left: 280px;
 }
 
 #drawer-toggle:checked ~ #page-content {
