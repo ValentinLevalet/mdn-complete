@@ -171,6 +171,22 @@ function handleSeed() {
  }
 }
 
+function classeRed() {
+    var tt = document.getElementById("supprFavori");
+    //console.log(tt)
+    tt.classList.toggle("red");
+}
+
+function verifFavori() {
+    var titreMotDef = document.getElementById("mot-def").getAttribute("title");
+    var titreMotClass = document.getElementsByClassName(titreMotDef);
+    var compteTitreMotClass = titreMotClass.length;
+    if(compteTitreMotClass == 2){
+        classeRed();
+    }
+    //console.log(compteTitreMotClass);
+}
+
 function setupAutoComplete() {
 
     //Create the autocomplete
@@ -207,10 +223,12 @@ function setupAutoComplete() {
         },
         minLength:2,
         select:function(event,ui) {
-            console.log(ui);
+            //console.log(ui);
             $("#displayEmployee").show().html(template(ui.item.person));
             $("body").animate({ scrollTop: 0}, 0);
             $("#champsSaisie").blur();
+            verifFavori();
+
         //sticky();
         },
         position: { my: "left bottom", at: "left top"},
@@ -338,7 +356,8 @@ function chercheMot(mot){
     request.onsuccess = function(event) {
         //console.log(request);
         $("#displayEmployee").show().html(template(request.result));
-    }
+        verifFavori();
+    };
 };
 
 /*  var favoris = document.getElementsByClassName('mot-favori').addEventListener("click", function(e) {
@@ -351,7 +370,7 @@ function chercheMot(mot){
 
   function supprValeur(prop){
     var indexSuppr = prop.parentNode.className;
-    console.log(indexSuppr);
+    //console.log(indexSuppr);
     //var indexSuppr = parseInt(indexSuppr);
     
     var request = db2.transaction(["names"], "readwrite")
@@ -360,6 +379,8 @@ function chercheMot(mot){
     request.onsuccess = function(event) {
         // c'est supprimé !
         //console.log(indexSuppr+"supprimé!");
+        var tt = document.getElementById("supprFavori");
+        tt.setAttribute("class", "favori-sup");
         listerFavoris();
     };
     // console.log(request);
@@ -378,6 +399,7 @@ function chercheMot(mot){
     // Faire quelque chose lors toutes les données sont ajoutées à la base de données.
     transaction.oncomplete = function(event) {
       // alert("All done!");
+      classeRed();
       listerFavoris();
     };
 
@@ -399,7 +421,7 @@ function chercheMot(mot){
 
 <script id="employeeTemplate" type="text/x-handlerbars-template">
 
-<div class="mot"><span class="{{id}}"><h1 onclick="ajoutMot()" id="mot-def" title="{{id}}">{{form}}</h1><button onclick="supprValeur(this);" class="favori-sup">x </button></span></div>
+<div class="mot"><span class="{{id}}"><h1 onclick="ajoutMot()" id="mot-def" title="{{id}}">{{form}}</h1><span onclick="supprValeur(this);" class="favori-sup" id="supprFavori">&#9733;</span></span></div>
     <span class="example aff"><i>{{etym}}</i></span>
     <div>
         {{#lexeme}}
@@ -472,9 +494,9 @@ function chercheMot(mot){
     <label for="drawer-toggle" id="drawer-toggle-label">≡</label>
     <nav id="drawer">
       <div id="foo"></div>
-      <p href="" onclick="cacheExemples();" class="bt btExample">Ex.</p>
-      <a href="delete.html" class="bt">Delete</a>
-      <a href="index.html" class="bt">Reload</a>
+      <p href="" onclick="cacheExemples();" class="bt btExample">&#128488; Exemples</p>
+      <a href="delete.html" class="bt">&#9762; Delete!!</a>
+      <a href="index.html" class="bt">&#8635; Reload</a>
     </nav>
     <div id="page-content">
         <progress id="progBar" value="0" max="8"></progress>
