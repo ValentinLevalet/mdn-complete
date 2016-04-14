@@ -177,12 +177,24 @@ function classeRed() {
     tt.classList.toggle("red");
 }
 
+function motDefSuppr() {
+    var e = document.getElementById("mot-def");
+    e.setAttribute("onclick", "supprValeur(this)");
+}
+
+function motDefAjout() {
+    var e = document.getElementById("mot-def");
+    e.setAttribute("onclick", "ajoutMot()");
+}
+
 function verifFavori() {
-    var titreMotDef = document.getElementById("mot-def").getAttribute("title");
-    var titreMotClass = document.getElementsByClassName(titreMotDef);
-    var compteTitreMotClass = titreMotClass.length;
-    if(compteTitreMotClass == 2){
+    var e = document.getElementById("mot-def");
+    var f = e.getAttribute("title");
+    var g = document.getElementsByClassName(f);
+    var h = g.length;
+    if(h == 2){
         classeRed();
+        motDefSuppr();
     }
     //console.log(compteTitreMotClass);
 }
@@ -357,6 +369,7 @@ function chercheMot(mot){
         //console.log(request);
         $("#displayEmployee").show().html(template(request.result));
         verifFavori();
+        motDefSuppr();
     };
 };
 
@@ -382,6 +395,7 @@ function chercheMot(mot){
         var tt = document.getElementById("supprFavori");
         tt.setAttribute("class", "favori-sup");
         listerFavoris();
+        motDefAjout();
     };
     // console.log(request);
     request.onerror = function(event) {
@@ -401,6 +415,7 @@ function chercheMot(mot){
       // alert("All done!");
       classeRed();
       listerFavoris();
+      motDefSuppr();
     };
 
     transaction.onerror = function(event) {
@@ -500,7 +515,7 @@ function chercheMot(mot){
     </nav>
     <div id="page-content">
         <progress id="progBar" value="0" max="8"></progress>
-        <ul id="menu" style="z-index: 1; bottom: 0px; left: 0px; display: none;" aria-activedescendant="ui-active-menuitem" role="listbox" class="ui-autocomplete ui-menu ui-widget ui-widget-content ui-corner-all"></ul>
+        <ul id="menu" style="z-index: 2; bottom: 0px; left: 0px; display: none;" aria-activedescendant="ui-active-menuitem" role="listbox" class="ui-autocomplete ui-menu ui-widget ui-widget-content ui-corner-all"></ul>
         <form>
         <input aria-haspopup="true" aria-autocomplete="list" role="textbox" autocomplete="off" class="ui-autocomplete-input" id="champsSaisie" autofocus type="search" class="clearable">
         </form>
