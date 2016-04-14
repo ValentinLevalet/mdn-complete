@@ -152,7 +152,7 @@ div#displayEmployee {
 }
 
 #page-content {
-    transition: margin-left 0.5s ease;
+    transition: transform 0.5s ease;
     height: 100%;
     overflow-x: hidden;
     overflow-y: scroll;
@@ -161,20 +161,22 @@ div#displayEmployee {
 }
 
 #drawer {
-    box-shadow: 0 0 50px #fff;
+    /* box-shadow: 0 0 50px #fff; */
     position: absolute;
-    left: -280px;
+    /* left: -280px; */
+    transform: translateX(-280px);
     width: 240px;
     height: 100%;
-    transition: left 0.5s, box-shadow 0.5s;
+    transition: transform 0.5s, box-shadow 0.5s;
     padding: 20px;
     z-index: 1;
 }
 
 #drawer-toggle, #drawer-toggle-label {
-    left: 0;
+    /* left: 0; */
+    transform: translateX(0);
     position: absolute;
-    transition: left .5s;
+    transition: transform .5s;
 }
 
 #drawer-toggle {
@@ -189,20 +191,24 @@ div#displayEmployee {
 }
 
 #drawer-toggle:checked {
-    left: 280px;
+    /* left: 280px; */
+    transform: translateX(280px);
 }
 
 #drawer-toggle:checked ~ #drawer {
-    box-shadow: 0 0 50px #000;
-    left: 0;
+    /* box-shadow: 0 0 50px #000; */
+    /* left: 0; */
+    transform: translateX(0);
 }
 
 #drawer-toggle:checked ~ #drawer-toggle-label {
-    left: 280px;
+    /* left: 280px; */
+    transform: translateX(280px);
 }
 
 #drawer-toggle:checked ~ #page-content {
-    margin-left: 280px;
+    /* margin-left: 280px; */
+    transform: translateX(280px);
 }
 
 .cadre-syn {
