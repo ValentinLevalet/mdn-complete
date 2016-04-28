@@ -4,7 +4,7 @@
 }
 
 html, body {
-    height: 100%;
+    height: 509px;
 }
 
 body {
@@ -44,7 +44,7 @@ h3 + ul, h3 + ul + ul {
     height: 50px;
     position: absolute;
     bottom: 0;
-    width: 271px;
+    width: 100%;
 }
 
 input:disabled {
@@ -115,6 +115,7 @@ div#displayEmployee {
 .ui-widget {
     /*font-family: "DejaVu";*/
     width: 98%;
+    z-index: 2;
 }
 
 #btAnnuler {
@@ -122,7 +123,7 @@ div#displayEmployee {
     height: 42px;
     bottom: 0;
     position: absolute;
-    right: 0;    
+    right: 0;
 }
 
 .cacher {
@@ -130,9 +131,9 @@ div#displayEmployee {
 }
 
 .bt {
-    border: 1px solid grey;
+    /* border: 1px solid grey; */
+    color: red;
     padding: 3px;
-    background-color: darkgray;
     font-family: sans-serif;
     display: inline-block;
     height: 40px;
@@ -140,10 +141,7 @@ div#displayEmployee {
     text-align: center;
     vertical-align: middle;
     line-height: 34px;
-    font-size: 30px;
-    color: #000;
-    text-shadow: -1px -1px 0px #5F5F5F;
-    opacity: .5;
+    font-size: 2.5em;
 }
 
 .btDelete {
@@ -166,10 +164,11 @@ div#displayEmployee {
     /* left: -280px; */
     transform: translateX(-280px);
     width: 240px;
-    height: 100%;
+    height: 469px;
     transition: transform 0.5s, box-shadow 0.5s;
     padding: 20px;
     z-index: 1;
+    overflow-y: scroll;
 }
 
 #drawer-toggle, #drawer-toggle-label {
@@ -184,10 +183,9 @@ div#displayEmployee {
 }
 
 #drawer-toggle-label {
-    background: #FFF;
     font-size: 2.5em;
     padding: 0 10px;
-    z-index: 2;
+    z-index: 1;
 }
 
 #drawer-toggle:checked {
@@ -203,11 +201,13 @@ div#displayEmployee {
 
 #drawer-toggle:checked ~ #drawer-toggle-label {
     /* left: 280px; */
+    height: 90%;
     transform: translateX(280px);
 }
 
 #drawer-toggle:checked ~ #page-content {
     /* margin-left: 280px; */
+    background: rgba(0,0,0,.2);
     transform: translateX(280px);
 }
 
@@ -229,7 +229,7 @@ div#displayEmployee {
 } */
 
 .ui-menu .ui-menu-item {
-    padding: .4em 0;
+    padding: .3em 0;
 }
 
 .sublevel {
@@ -246,8 +246,8 @@ div#displayEmployee {
     display: none;
 }
 
-#foo {
-    text-align: right;
+#foo li {
+    margin-bottom: 1em;
 }
 
 .mot {
@@ -262,4 +262,8 @@ div#displayEmployee {
 #supprFavori.red {
     color: red;
     display: inline;
+}
+
+.favori-sup {
+    float: right;
 }

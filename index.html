@@ -320,16 +320,16 @@ function listerFavoris(){
                     //ajout id basé sur clé indexeddb
                     item.setAttribute("class", arrayIndexes[i]);
                     //item.setAttribute("class", "ligne-favori");
-                    var suppr = document.createElement('button');
-                    suppr.setAttribute("class", "favori-sup");
-                    suppr.setAttribute("onclick", "supprValeur(this);")
-                    suppr.appendChild(document.createTextNode("x "));
-                    item.appendChild(suppr);
                     var span = document.createElement('label');
                     span.setAttribute("class", "mot-favori");
                     span.setAttribute("for", "drawer-toggle");
                     span.setAttribute("onclick", "chercheMot(this);")
                     item.appendChild(span);
+                    var suppr = document.createElement('button');
+                    suppr.setAttribute("class", "favori-sup");
+                    suppr.setAttribute("onclick", "supprValeur(this);")
+                    suppr.appendChild(document.createTextNode("x "));
+                    item.appendChild(suppr);
 
                     // Set item contents:
 
@@ -432,6 +432,10 @@ function chercheMot(mot){
 
   }
 
+  function fermerDrawer(){
+    document.getElementById("drawer-toggle").checked = false;
+  }
+
 </script>
 
 <script id="employeeTemplate" type="text/x-handlerbars-template">
@@ -515,12 +519,12 @@ function chercheMot(mot){
     </nav>
     <div id="page-content">
         <progress id="progBar" value="0" max="8"></progress>
-        <ul id="menu" style="z-index: 2; bottom: 0px; left: 0px; display: none;" aria-activedescendant="ui-active-menuitem" role="listbox" class="ui-autocomplete ui-menu ui-widget ui-widget-content ui-corner-all"></ul>
+        <ul id="menu" style="z-index: 2 !important; bottom: 0px; left: 0px; display: none;" aria-activedescendant="ui-active-menuitem" role="listbox" class="ui-autocomplete ui-menu ui-widget ui-widget-content ui-corner-all"></ul>
         <form>
-        <input aria-haspopup="true" aria-autocomplete="list" role="textbox" autocomplete="off" class="ui-autocomplete-input" id="champsSaisie" autofocus type="search" class="clearable">
+        <input aria-haspopup="true" aria-autocomplete="list" role="textbox" autocomplete="off" class="ui-autocomplete-input" id="champsSaisie" autofocus type="search" class="clearable" onclick="fermerDrawer();">
         </form>
         <span id="status"></span><br><span id="status2"></span>
-        <a onclick="annuler();" id="btAnnuler" class="bt">x</a>
+        <a onclick="annuler();" id="btAnnuler" class="bt">&times;</a>
 
         <div id="displayEmployee"></div>
     </div>
