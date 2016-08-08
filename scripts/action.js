@@ -6,8 +6,12 @@ function annuler(){
 }
 
 function cacheExemples(){
-    var selec = document.getElementsByClassName('aff');
-    for(var i = 0; i < selec.length; i++){
-        selec[i].classList.toggle('cacher');
-    };
+    if(def == true){
+        var selec = document.getElementsByClassName('aff');
+        for(var i = 0; i < selec.length; i++){
+            selec[i].classList.toggle('cacher');
+        };
+        e = document.getElementById("btExample");
+        e.classList.toggle("desactiv");
+    }
 }

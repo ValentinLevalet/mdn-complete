@@ -25,6 +25,7 @@ var IDBKeyRange = window.IDBKeyRange || window.webkitIDBKeyRange;
 var db;
 var template;
 var data;
+var def = false;
 
 $(document).ready(function() {
     console.log("Startup...");
@@ -237,9 +238,13 @@ function setupAutoComplete() {
         select:function(event,ui) {
             //console.log(ui);
             $("#displayEmployee").show().html(template(ui.item.person));
+            def = true;
             $("body").animate({ scrollTop: 0}, 0);
             $("#champsSaisie").blur();
             verifFavori();
+            if(def == true){
+                cacheExemples();
+            }
 
         //sticky();
         },
@@ -325,10 +330,10 @@ function listerFavoris(){
                     span.setAttribute("for", "drawer-toggle");
                     span.setAttribute("onclick", "chercheMot(this);")
                     item.appendChild(span);
-                    var suppr = document.createElement('button');
+                    var suppr = document.createElement('span');
                     suppr.setAttribute("class", "favori-sup");
                     suppr.setAttribute("onclick", "supprValeur(this);")
-                    suppr.appendChild(document.createTextNode("x "));
+                    suppr.appendChild(document.createTextNode("\u00D7 "));
                     item.appendChild(suppr);
 
                     // Set item contents:
@@ -434,6 +439,7 @@ function chercheMot(mot){
 
   function fermerDrawer(){
     document.getElementById("drawer-toggle").checked = false;
+    document.getElementById("btAnnuler").classList.remove("cacher");
   }
 
 </script>
@@ -510,10 +516,9 @@ function chercheMot(mot){
 
 <body>
     <input type="checkbox" id="drawer-toggle" />
-    <label for="drawer-toggle" id="drawer-toggle-label">≡</label>
+    <label for="drawer-toggle" id="drawer-toggle-label"><span>≡</span></label>
     <nav id="drawer">
       <div id="foo"></div>
-      <p href="" onclick="cacheExemples();" class="bt btExample">&#128488; Exemples</p>
       <a href="delete.html" class="bt">&#9762; Delete!!</a>
       <a href="index.html" class="bt">&#8635; Reload</a>
     </nav>
@@ -521,12 +526,13 @@ function chercheMot(mot){
         <progress id="progBar" value="0" max="8"></progress>
         <ul id="menu" style="z-index: 2 !important; bottom: 0px; left: 0px; display: none;" aria-activedescendant="ui-active-menuitem" role="listbox" class="ui-autocomplete ui-menu ui-widget ui-widget-content ui-corner-all"></ul>
         <form>
-        <input aria-haspopup="true" aria-autocomplete="list" role="textbox" autocomplete="off" class="ui-autocomplete-input" id="champsSaisie" autofocus type="search" class="clearable" onclick="fermerDrawer();">
+        <input aria-haspopup="true" aria-autocomplete="list" role="textbox" autocomplete="off" class="ui-autocomplete-input" id="champsSaisie" autofocus type="search" class="clearable" onclick="fermerDrawer();" onfocus="">
         </form>
         <span id="status"></span><br><span id="status2"></span>
-        <a onclick="annuler();" id="btAnnuler" class="bt">&times;</a>
+        <a onclick="annuler();" id="btAnnuler" class="bt cacher"> &times;</a>
 
         <div id="displayEmployee"></div>
+        <p onclick="cacheExemples();" class="bt btExample" id="btExample">&#128172;</p>
     </div>
 
 </body></html>

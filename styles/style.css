@@ -42,9 +42,9 @@ h3 + ul, h3 + ul + ul {
 #champsSaisie {
     font-size: 1.5em;
     height: 50px;
-    position: absolute;
+    position: fixed;
     bottom: 0;
-    width: 100%;
+    width: 316px;
 }
 
 input:disabled {
@@ -126,10 +126,6 @@ div#displayEmployee {
     right: 0;
 }
 
-.cacher {
-    display: none;
-}
-
 .bt {
     /* border: 1px solid grey; */
     color: red;
@@ -142,6 +138,23 @@ div#displayEmployee {
     vertical-align: middle;
     line-height: 34px;
     font-size: 2.5em;
+}
+
+.btExample {
+    -moz-user-select: none;
+    position: absolute;
+    right: 10px;
+    z-index: 1;
+    color: #000;
+    top: 20px;
+}
+
+.desactiv {
+    opacity: .25;
+}
+
+.cacher {
+    display: none;
 }
 
 .btDelete {
@@ -183,9 +196,14 @@ div#displayEmployee {
 }
 
 #drawer-toggle-label {
-    font-size: 2.5em;
-    padding: 0 10px;
     z-index: 1;
+}
+
+#drawer-toggle-label span {
+    font-size: 2.5em;
+    line-height: 1em;
+    padding: 0 5px;
+    text-align: center;
 }
 
 #drawer-toggle:checked {
@@ -228,8 +246,8 @@ div#displayEmployee {
     margin-top: 50px;
 } */
 
-.ui-menu .ui-menu-item {
-    padding: .3em 0;
+.ui-menu .ui-menu-item a {
+    padding: .5em .4em;
 }
 
 .sublevel {
@@ -247,7 +265,7 @@ div#displayEmployee {
 }
 
 #foo li {
-    margin-bottom: 1em;
+    margin-bottom: 1.75em;
 }
 
 .mot {
@@ -264,6 +282,7 @@ div#displayEmployee {
     display: inline;
 }
 
-.favori-sup {
-    float: right;
+#foo .favori-sup {
+    font-size: 2.5em;
+    line-height: .5em;
 }
